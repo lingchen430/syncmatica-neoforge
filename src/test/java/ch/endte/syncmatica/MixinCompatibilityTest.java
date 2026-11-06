@@ -18,8 +18,8 @@ class MixinCompatibilityTest {
     private static final Path ROOT = Path.of(System.getProperty("port.projectDir"));
     private final List<Path> jars = List.of(
         Path.of("libs/forgematica-0.5.1+mc26.1.2.jar"),
-        Path.of("libs/mafglib-0.5.6+mc26.1.2.jar"),
-        Path.of("build/moddev/artifacts/minecraft-patched-26.1.2.124.jar"));
+        Path.of(System.getProperty("port.mafglibJar")),
+        Path.of(System.getProperty("port.minecraftJar")));
 
     private ClassNode read(String name) throws Exception {
         var local = ROOT.resolve(Path.of("build/classes/java/main", name + ".class"));

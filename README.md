@@ -1,14 +1,16 @@
 # Syncmatica 非官方 NeoForge 移植版
 
-[下载实验版 JAR](https://github.com/lingchen430/syncmatica-neoforge/releases/tag/v0.3.20-neoforge.1) · [上游源码](https://github.com/sakura-ryoko/syncmatica/tree/LTS/26.1)
+[下载实验版 JAR](https://github.com/lingchen430/syncmatica-neoforge/releases/tag/v0.3.20-neoforge.2) · [上游源码](https://github.com/sakura-ryoko/syncmatica/tree/LTS/26.1)
 
-适用 Minecraft **26.1.2**、NeoForge **26.1.2.124 或更新的 26.1.2 构建**，需要 **Java 25**。
-版本：0.3.20-neoforge.1，实验性首版。基于 sakura-ryoko/syncmatica 的 LTS/26.1 分支，提交 `d145beed842ae855db7da79cd265d10ad0ecc6c3`。
+适用 Minecraft **26.1.2**、NeoForge **26.1.2.122 或更新的 26.1.2 构建**，需要 **Java 25**。
+版本：0.3.20-neoforge.2，实验性兼容修正版。基于 sakura-ryoko/syncmatica 的 LTS/26.1 分支，提交 `d145beed842ae855db7da79cd265d10ad0ecc6c3`。
 此移植未经上游作者发布或背书。
+
+0.3.20-neoforge.2 修正首版过高的依赖下限，支持 NeoForge 26.1.2.122 与 MaFgLib 0.5.5+mc26.1.2。请删除旧版 Syncmatica JAR，再放入新版本，避免同一模组重复加载。
 
 ## 服务端安装
 
-把 `syncmatica-neoforge-26.1.2-0.3.20-neoforge.1.jar` 放入 NeoForge 服务器的 `mods` 文件夹并重启。
+把 `syncmatica-neoforge-26.1.2-0.3.20-neoforge.2.jar` 放入 NeoForge 服务器的 `mods` 文件夹并重启。
 服务端只需要这个 JAR，不需要 Forgematica、MaFgLib、FoxifiedClassTweaker、Fabric API 或 Connector。
 未安装 Syncmatica 的玩家仍可正常加入；是否能跨加载器加入，还取决于服务器的其他模组。
 
@@ -17,7 +19,7 @@
 在客户端 `mods` 中安装本 JAR 和以下三个依赖（均选 Minecraft 26.1.2 对应文件）：
 
 1. [Forgematica 0.5.1+mc26.1.2](https://github.com/CagayakeGirls/litematica-neoforge/releases/tag/0.5.1%2Bmc26.1.2)
-2. [MaFgLib 0.5.6+mc26.1.2](https://github.com/CagayakeGirls/malilib-neoforge/releases/tag/0.5.6%2Bmc26.1.2)
+2. [MaFgLib 0.5.5+mc26.1.2](https://github.com/CagayakeGirls/malilib-neoforge/releases/tag/0.5.5%2Bmc26.1.2) 或 [0.5.6+mc26.1.2](https://github.com/CagayakeGirls/malilib-neoforge/releases/tag/0.5.6%2Bmc26.1.2)
 3. [FoxifiedClassTweaker 0.1.2](https://modrinth.com/mod/foxifiedclasstweaker/version/nq3u4UMi)
 
 依赖文件没有打进本 JAR。此移植使用原生 NeoForge API，无需 Connector。
@@ -39,7 +41,7 @@ Fabric 客户端应继续使用 [原版 Syncmatica](https://modrinth.com/mod/syn
 
 ## 已验证范围
 
-- Java 25 / Gradle 9.2.1 / NeoForge 26.1.2.124 编译成功，已执行过完整 `clean build`。
+- Java 25 / Gradle 9.2.1；基于 NeoForge 26.1.2.122 / MaFgLib 0.5.5 编译。当前版本的完整检查结果见 `docs/validation.md`。
 - 4 项自动检查通过：临时服务端运行和通信上下文/命令初始化；数据包往返与重复编码；投影元数据保存读取；注入点兼容检查。
 - 服务端测试环境没有加载三个客户端依赖。
 - 16 处启用的注入签名与 Minecraft / Forgematica / MaFgLib 的实际类文件匹配。
@@ -63,7 +65,7 @@ powershell -ExecutionPolicy Bypass -File .\setup-dependencies.ps1
 
 ## 来源和许可
 
-检索日期：2026-11-06。官方 Modrinth 项目列出的加载器为 Fabric / Quilt；GitHub 和 Modrinth 检索未发现现成的 Syncmatica NeoForge 26.1.2 移植发布。
+首次移植前检索日期：2026-11-06。官方 Modrinth 项目列出的加载器为 Fabric / Quilt；GitHub 和 Modrinth 检索未发现现成的 Syncmatica NeoForge 26.1.2 移植发布。
 这表示本次检索未找到，不表示已穷尽所有私人仓库或未公开项目。
 
 - [Syncmatica 官方发布页](https://modrinth.com/mod/syncmatica)
