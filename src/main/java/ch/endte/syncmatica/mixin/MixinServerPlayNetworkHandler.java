@@ -1,0 +1,69 @@
+package ch.endte.syncmatica.mixin;
+
+import java.util.function.Consumer;
+import ch.endte.syncmatica.Context;
+import ch.endte.syncmatica.Reference;
+import ch.endte.syncmatica.Syncmatica;
+import ch.endte.syncmatica.communication.ExchangeTarget;
+import ch.endte.syncmatica.communication.ServerCommunicationManager;
+import ch.endte.syncmatica.network.actor.IServerPlay;
+import ch.endte.syncmatica.network.handler.ServerPlayHandler;
+import ch.endte.syncmatica.network.SyncmaticaPacket;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.network.Connection;
+import net.minecraft.network.DisconnectionDetails;
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+
+@Mixin(value = ServerGamePacketListenerImpl.class, priority = 1001)
+public abstract class MixinServerPlayNetworkHandler implements IServerPlay
+{
+    @Shadow public abstract ServerPlayer getPlayer();
+
+    @Unique
+    private ExchangeTarget exTarget = null;
+    @Unique
+    private ServerCommunicationManager comManager = null;
+
+    @Inject(method = "onDisconnect", at = @At("HEAD"))
+    public void syncmatica$onDisconnected(DisconnectionDetails info, CallbackInfo ci)
+    {
+        syncmatica$operateComms(sm -> sm.onPlayerLeave(syncmatica$getExchangeTarget()));
+    }
+
+    @Unique
+    public void syncmatica$operateComms(final Consumer<ServerCommunicationManager> operation)
+    {
+        if (comManager == null)
+        {
+            final Context con = Syncmatica.getContext(Syncmatica.SERVER_CONTEXT);
+            if (con != null)
+            {
+                comManager = (ServerCommunicationManager) con.getCommunicationManager();
+            }
+        }
+        if (comManager != null)
+        {
+            operation.accept(comManager);
+        }
+    }
+
+    @Unique
+    public ExchangeTarget syncmatica$getExchangeTarget()
+    {
+        if (exTarget == null)
+        {
+            exTarget = new ExchangeTarget((ServerGamePacketListenerImpl) (Object) this);
+        }
+        return exTarget;
+    }
+}

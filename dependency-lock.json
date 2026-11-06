@@ -1,0 +1,17 @@
+[
+  {
+    "file": "forgematica-0.5.1+mc26.1.2.jar",
+    "url": "https://github.com/CagayakeGirls/litematica-neoforge/releases/download/0.5.1%2Bmc26.1.2/forgematica-0.5.1%2Bmc26.1.2.jar",
+    "sha256": "0b7eb7149661ec119470f99c844386949ca5c207123952c88fbaef0fd070c1a5"
+  },
+  {
+    "file": "mafglib-0.5.6+mc26.1.2.jar",
+    "url": "https://github.com/CagayakeGirls/malilib-neoforge/releases/download/0.5.6%2Bmc26.1.2/mafglib-0.5.6%2Bmc26.1.2.jar",
+    "sha256": "9085224709661ccd3111c7343c7f8aa0aa30851ae8d1765cf0bfbee25dba58f1"
+  },
+  {
+    "file": "foxified-classtweaker-0.1.2.jar",
+    "url": "https://cdn.modrinth.com/data/bsJhdceD/versions/nq3u4UMi/foxified-classtweaker-0.1.2.jar",
+    "sha256": "47c4a8cc381b5b88ab91fdfc6e15268204624b75805a3f0aff199fbfba287f5d"
+  }
+]

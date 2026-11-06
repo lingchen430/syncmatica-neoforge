@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ch.endte.syncmatica.litematica_mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [],
+  "client": [
+    "MixinGuiMainMenu",
+    "MixinWidgetListSchematicPlacement",
+    "MixinWidgetSchematicPlacement",
+    "MixinGuiBase",
+    "MixinButtonBase",
+    "MixinGuiPlacementConfiguration"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

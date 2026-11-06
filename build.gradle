@@ -1,0 +1,47 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+version = '0.3.20-neoforge.1'
+group = 'ch.endte.syncmatica'
+base { archivesName = 'syncmatica-neoforge-26.1.2' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(25); withSourcesJar() }
+repositories { mavenCentral() }
+neoForge {
+    version = '26.1.2.124'
+    runs {
+        client { client() }
+        server { server(); programArgument '--nogui' }
+    }
+    mods { syncmatica { sourceSet sourceSets.main } }
+    unitTest { enable(); testedMod = mods.syncmatica }
+}
+dependencies {
+    compileOnly files('libs/forgematica-0.5.1+mc26.1.2.jar', 'libs/mafglib-0.5.6+mc26.1.2.jar')
+    // Opt in only for graphical development runs; dedicated-server tests omit these.
+    if (project.hasProperty('withClientMods')) {
+        runtimeOnly files('libs/forgematica-0.5.1+mc26.1.2.jar',
+            'libs/mafglib-0.5.6+mc26.1.2.jar', 'libs/foxified-classtweaker-0.1.2.jar')
+    }
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    compileOnly 'org.jetbrains:annotations:26.0.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'net.neoforged:testframework:26.1.2.124'
+}
+test {
+    useJUnitPlatform()
+    systemProperty 'port.projectDir', projectDir.absolutePath
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+// Use the project's Java 25 for build helper tools as well.
+tasks.withType(net.neoforged.nfrtgradle.NeoFormRuntimeTask).configureEach {
+    javaExecutable = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(25)
+    }.map { it.executablePath.asFile.absolutePath }
+}
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+jar { from('LICENSE') }
