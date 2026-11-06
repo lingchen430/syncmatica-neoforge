@@ -11,6 +11,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import static org.junit.jupiter.api.Assertions.*;
 
 /** Checks client injection signatures against the actual released dependency jars without loading graphics. */
@@ -44,6 +45,48 @@ class MixinCompatibilityTest {
         for (int i = 0; i < node.values.size(); i += 2)
             if (node.values.get(i).equals(key)) return node.values.get(i + 1);
         return null;
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void selectedMaFgLibTooltipHooksMatchNeoForgeItemStack() throws Exception {
+        var mixin = read("fi/dy/masa/malilib/mixin/item/MixinItemStack");
+        var target = read("net/minecraft/world/item/ItemStack");
+        int checkedHooks = 0;
+        for (var callback : mixin.methods) {
+            var annotations = new ArrayList<AnnotationNode>();
+            if (callback.visibleAnnotations != null) annotations.addAll(callback.visibleAnnotations);
+            if (callback.invisibleAnnotations != null) annotations.addAll(callback.invisibleAnnotations);
+            for (var inject : annotations) {
+                if (!inject.desc.endsWith("/Inject;")) continue;
+                for (String selector : (List<String>) value(inject, "method")) {
+                    int descriptor = selector.indexOf('(');
+                    String methodName = descriptor < 0 ? selector : selector.substring(0, descriptor);
+                    var method = target.methods.stream().filter(m -> m.name.equals(methodName)
+                        && (descriptor < 0 || m.desc.equals(selector.substring(descriptor))))
+                        .findFirst().orElseThrow(() -> new AssertionError("MaFgLib tooltip method missing: " + selector));
+                    for (var at : (List<AnnotationNode>) value(inject, "at")) {
+                        if (!"INVOKE".equals(value(at, "value"))) continue;
+                        String invocation = (String) value(at, "target");
+                        int split = invocation.indexOf(';');
+                        int args = invocation.indexOf('(', split);
+                        String owner = invocation.substring(1, split);
+                        String name = invocation.substring(split + 1, args);
+                        String desc = invocation.substring(args);
+                        int count = 0;
+                        for (var instruction : method.instructions) {
+                            if (instruction instanceof MethodInsnNode call && call.owner.equals(owner)
+                                    && call.name.equals(name) && call.desc.equals(desc)) count++;
+                        }
+                        Integer ordinal = (Integer) value(at, "ordinal");
+                        assertTrue(count > (ordinal == null ? -1 : ordinal) && count > 0,
+                            "MaFgLib tooltip invocation missing: " + selector + " -> " + invocation);
+                        checkedHooks++;
+                    }
+                }
+            }
+        }
+        assertTrue(checkedHooks > 0);
     }
 
     @Test

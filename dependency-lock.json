@@ -5,6 +5,11 @@
     "sha256": "0b7eb7149661ec119470f99c844386949ca5c207123952c88fbaef0fd070c1a5"
   },
   {
+    "file": "mafglib-0.5.4+mc26.1.2.jar",
+    "url": "https://github.com/CagayakeGirls/malilib-neoforge/releases/download/0.5.4%2Bmc26.1.2/mafglib-0.5.4%2Bmc26.1.2.jar",
+    "sha256": "f2b66da9636d5a8ad873a9a304bb6f782e946679d98242326d4c9c6c832192c4"
+  },
+  {
     "file": "mafglib-0.5.5+mc26.1.2.jar",
     "url": "https://github.com/CagayakeGirls/malilib-neoforge/releases/download/0.5.5%2Bmc26.1.2/mafglib-0.5.5%2Bmc26.1.2.jar",
     "sha256": "9d0060861260ef635a11e12dd902c78220d08ea10e6c37158ee89c451cbfebd0"

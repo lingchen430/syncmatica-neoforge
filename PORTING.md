@@ -1,9 +1,9 @@
 # Port implementation notes
 
 Upstream: sakura-ryoko/syncmatica, LTS/26.1, d145beed842ae855db7da79cd265d10ad0ecc6c3 (0.3.20).
-Target: Minecraft 26.1.2, minimum NeoForge 26.1.2.122 and MaFgLib 0.5.5, Java 25.
+Target: Minecraft 26.1.2, all NeoForge 26.1.2 builds starting at 26.1.2.0-beta, Java 25.
 
-Version 0.3.20-neoforge.2 corrects the initial port's unnecessarily high dependency floors. Build/test properties `neoVersion` and `mafglibVersion` select the compatibility combination. The matrix includes 26.1.2.122 / 0.5.5 and 26.1.2.124 / 0.5.6.
+Version 0.3.20-neoforge.3 compiles against the earliest published NeoForge 26.1.2 build. Client MaFgLib selection follows the tooltip-hook boundary at NeoForge .84: 0.5.4 before .84; 0.5.5/0.5.6 from .84 onward. Build properties `neoVersion` and `mafglibVersion` select the compatibility combination.
 
 - Replaced Fabric initializer, loader metadata/path access, networking registrations and Fabric permission wrapper with native NeoForge equivalents.
 - Registered an optional bidirectional PLAY payload. Client handling is registered only on the client distribution; NeoForge dispatches both directions on the main thread.
